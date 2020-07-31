@@ -1,5 +1,5 @@
 #Azure Resource Manager Variable
-location     = "South Central US"
+location = "South Central US"
 
 #Locations Available in US:
 #"Central US"
