@@ -3,7 +3,7 @@ terraform {
     organization = "Chicago-PowerShell"
 
     workspaces {
-      name = "GHA-Remote-ModuleTest"
+      name = "atxopenshift-workshop101"
     }
   }
 }
