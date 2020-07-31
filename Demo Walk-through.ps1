@@ -5,7 +5,7 @@
 
 <#
 #If your AZ CLI is not already authenticated, first login to Azure
-#This will launch your deault browser to process your login
+#This will launch your default browser to process your login
 az login
 
 #>
@@ -39,7 +39,6 @@ We are using the following switches:
 $ServicePrincipalJSON = az ad sp create-for-rbac --name "ChicagoPowerShell-GHA-Terraform" --role contributor --scopes /subscriptions/$($AccountObject.Id) --sdk-auth
 
 #Display the results
-######NEED OBFUSCATE FUNCTION
 $ServicePrincipalJSON
 
 #endregion Initial Setup: Step 1
@@ -67,10 +66,8 @@ $ServicePrincipalObject.tenantId | clip
 #endregion Initial Setup: Step 2
 
 
-
-
 <#
-#Final Cleanup
+#Final Service PrincipalCleanup
 
 $spId = ((az ad sp list --all | ConvertFrom-Json) | Where-Object { '<http://ChicagoPowerShell-GHA-Terraform>' -in $_.serviceprincipalnames }).objectId
 az ad sp delete --id $spId
@@ -79,11 +76,35 @@ az ad sp delete --id $spId
 
 
 <#
-#Note: Add these secrets to your GitHub repository:
 
-GH_AZ_SUBSCRIPTION
-GH_AZ_CLIENTID
-GH_AZ_CLIENTSECRET
-GH_AZ_TENANTID
-GH_TF_API_TOKEN
+Set up for the demo:
+
+*Go to https://app.terraform.io/ to create an organization & workspace, connect it to Github, and create an API token to add to your GitHub repository secrets.*
+
+*Note: Again, add these secrets to your GitHub repository before you start.*
+
+GH_AZ_SUBSCRIPTION - this is your Azure subscription ID
+GH_AZ_CLIENTID - this is your service principal client ID
+GH_AZ_CLIENTSECRET - this is your service principal client secret
+GH_AZ_TENANTID - this is your service principal tenant ID
+GH_TF_API_TOKEN - this is your Terraform Cloud API token
+
+*Note: Also, to make this functional for you, upload your public ssh key as 'github_actions_demo.pub' to have it imported.*
+
+Running the demo (as it was in the live session):
+
+From this point, to follow the you can just move each of the sets of files from the './tf-files' directory to the root directory.
+Edit the *.auto.tfvars for your own variables for your environment & deployment.
+Then when you either pull or push to the repository, you should see the workflows run.
+
+Fix any errors in the files, let your workflows run, and commit some code.
+
+Final Cleanup:
+
+To delete resources at the end, go into the 'Actions' tab, and open the 'Manual Terraform Destroy' workflow.
+Click the 'Run Workflow' button on the right side, tell it to use the workflow from the 'main' branch, then click 'Run Workflow'.
+Go back to the Actions tab, and watch your 'Manual Terraform Destroy' workflow start a job to nuke it all.
+
+
+Thanks for playing. :)
 #>
