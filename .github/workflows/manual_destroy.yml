@@ -1,0 +1,45 @@
+name: 'Manual Terraform Destroy'
+
+on: 
+  workflow_dispatch:
+#    inputs:
+#      logLevel:
+#        description: 'Log level'     
+#        required: true
+#        default: 'warning'
+#      tags:
+#        description: 'Enter a tag'
+
+jobs:
+  terraform:
+    name: 'Terraform Destroy'
+    runs-on: ubuntu-latest
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    # Checkout the repository to the GitHub Actions runner
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1.0.1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+
+    # Terraform validate
+    - name: Terraform Validate
+      run: terraform validate
+        
+    # manual run of this workflow, end with a 'terraform destroy'
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve -var 'subscription=${{ secrets.GH_AZ_SUBSCRIPTION }}' -var 'client_Id=${{ secrets.GH_AZ_CLIENTID }}' -var 'client_Secret=${{ secrets.GH_AZ_CLIENTSECRET }}' -var 'tenant_Id=${{ secrets.GH_AZ_TENANTID }}'
+      
