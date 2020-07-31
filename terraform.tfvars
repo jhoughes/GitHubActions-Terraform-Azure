@@ -1,0 +1,2 @@
+prefix      = "fsg"
+environment = "PowerShellChicagoDemo"

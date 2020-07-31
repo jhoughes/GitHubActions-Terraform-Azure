@@ -1,2 +1,3 @@
-# GitHubActions-Terraform-Azure
-Demo repo for PowerShell Chicago
+#GitHubActions-Terraform-Azure
+
+Demo code for presentation to PowerShell Chicago 2020
