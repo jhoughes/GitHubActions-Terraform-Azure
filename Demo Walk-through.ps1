@@ -76,3 +76,14 @@ $spId = ((az ad sp list --all | ConvertFrom-Json) | Where-Object { '<http://Chic
 az ad sp delete --id $spId
 
 #>
+
+
+<#
+#Note: Add these secrets to your GitHub repository:
+
+GH_AZ_SUBSCRIPTION
+GH_AZ_CLIENTID
+GH_AZ_CLIENTSECRET
+GH_AZ_TENANTID
+GH_TF_API_TOKEN
+#>
